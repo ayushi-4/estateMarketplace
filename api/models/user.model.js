@@ -18,7 +18,11 @@ const userSchema = new mongoose.Schema({
         type:String,
         required: true,
         
-    }
+    },
+    avatar:{
+        type:String,
+        default:"https://i0.wp.com/eacademy.edu.vn/wp-content/uploads/2023/photos1/1/WhatsApp-DP-Cute-151.jpg?resize=1080%2C1350&ssl=1"
+    },
 } ,
  {timeStamps : true
  });
