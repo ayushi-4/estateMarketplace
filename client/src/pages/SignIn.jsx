@@ -66,9 +66,9 @@ export default function SignIn() {
         />
         <button
           disabled={loading}
-          className='bg-rose-400 text-black p-3 rounded-lg uppercase hover:opacity-50 disabled:opacity-80 transition ease-in-out delay-150 bg-rose-500 hover:-translate-y-1 hover:scale-110 hover:bg-sky-300 duration-300'
+          className='bg-rose-700 text-black p-3 rounded-lg uppercase hover:opacity-50 disabled:opacity-80 transition ease-in-out delay-150 bg-rose-500 hover:-translate-y-1 hover:scale-110 hover:bg-sky-300 duration-300'
         >
-          {loading ? 'Loading...' : 'Sign In' }
+          {loading ? 'Loading...' : <b> Sign In</b> }
         </button>
         <OAuth/>
       </form>

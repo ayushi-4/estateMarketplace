@@ -37,6 +37,6 @@ const res = await fetch('/api/auth/google', {
 
   return (
     <button onClick={handleGoogleClick} type='button' className='bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95 *
-    transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-pink-600 duration-300'>Continue to Google</button>
+    transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-pink-800 duration-300'>Continue to Google</button>
   )
 }

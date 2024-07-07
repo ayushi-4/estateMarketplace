@@ -1,8 +1,10 @@
 import React, { useState ,useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { updateUserFailure,updateUserSuccess,updateUserStart } from '../redux/user/userSlice'
+import { deleteUserFailure,deleteUserSuccess,deleteUserStart } from '../redux/user/userSlice'
 import {getStorage , ref, uploadBytesResumable , getDownloadURL} from 'firebase/storage'
 import {useRef} from 'react'
+import { signOutUserFailure,signOutUserStart,signOutUserSuccess } from '../redux/user/userSlice'
 import { useDispatch } from 'react-redux'
 import { app } from '../firebase';
 export default function Profile() {
@@ -12,7 +14,12 @@ export default function Profile() {
 const[file , setFile] = useState(undefined);
 const [updateSuccess, setUpdateSuccess] = useState(false);
 const [filePerc , setFilePerc] = useState(0);
-const[formData , setFormData] = useState({ });
+const[formData , setFormData] = useState({
+  username: currentUser.username,
+  email: currentUser.email,
+  avatar: currentUser.avatar,
+  password: '' ,
+ });
 const dispatch = useDispatch();
   // firebase storage
   // allow read ;
@@ -50,6 +57,38 @@ const dispatch = useDispatch();
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch('/api/auth/signout');
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(data.message));
     }
   };
 
@@ -117,8 +156,8 @@ const dispatch = useDispatch();
         p-3 uppercase hover:opacity-95 disabled:opacity-80 transition ease-in-out delay-150 bg-rose-500 hover:-translate-y-1 hover:scale-110 hover:bg-rose-300 duration-300'><b> {loading ? 'Loading...' : 'update'}</b></button>
       </form>
       <div className='flex justify-between mt-5'>
-    <span className='text-rose-500 cursor-pointer'> <b>Delete account</b> </span>
-    <span className='text-rose-500 cursor-pointer'> <b>Sign out</b> </span>
+    <span onClick={handleDeleteUser} className='text-rose-500 cursor-pointer'> <b>Delete account</b> </span>
+    <span onClick={handleSignOut} className='text-rose-500 cursor-pointer'> <b>Sign out</b> </span>
 
       </div>
       <p className='text-red-700 mt-5'> {error? error: ""}</p>
